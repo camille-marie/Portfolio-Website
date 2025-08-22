@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Projects - Camille Toubol Fernandez</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .project-detail {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-detail h2 {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+        
+        .project-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            background: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .code-block pre {
+            margin: 0;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: bold;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: #764ba2;
+        }
+        
+        .project-links {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .project-links a {
+            display: inline-block;
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .project-links a:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>Camille Toubol Fernandez</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="index.html#about" class="nav-link">About</a></li>
+                <li><a href="index.html#projects" class="nav-link">Projects</a></li>
+                <li><a href="index.html#music" class="nav-link">Music</a></li>
+                <li><a href="index.html#applications" class="nav-link">Applications</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Projects Header -->
+    <section class="hero" style="min-height: 60vh; padding: 100px 0 60px;">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">Technical Projects</h1>
+                <p class="hero-subtitle">Exploring the intersection of audio engineering and software development</p>
+                <a href="index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Portfolio
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Content -->
+    <section class="projects" style="background: #f8f9fa;">
+        <div class="container">
+            <!-- Surround-3 Engine -->
+            <div class="project-detail">
+                <h2>Surround-3 Engine</h2>
+                <div class="project-meta">
+                    <span class="meta-item">Language: C++</span>
+                    <span class="meta-item">Type: Real-time Audio System</span>
+                    <span class="meta-item">Complexity: Advanced</span>
+                </div>
+                
+                <p style="font-size: 1.1rem; line-height: 1.8; color: #555; margin-bottom: 2rem;">
+                    A sophisticated real-time granular synthesis system with live audio processing capabilities, built from the ground up in C++. This project represents my journey into low-level audio programming and real-time systems design.
+                </p>
+                
+                <h3>Key Features</h3>
+                <ul class="feature-list">
+                    <li>Real-time granular synthesis with configurable parameters</li>
+                    <li>Live audio processing and manipulation</li>
+                    <li>Multi-channel audio support</li>
+                    <li>Low-latency performance optimization</li>
+                    <li>Modular architecture for extensibility</li>
+                </ul>
+                
+                <h3>Technical Implementation</h3>
+                <p>The system is built using modern C++17 features and follows audio programming best practices:</p>
+                
+                <div class="code-block">
+<pre>// Example of the core synthesis loop
+class GranularSynthesizer {
+private:
+    std::vector&lt;Grain&gt; activeGrains;
+    AudioBuffer&lt;float&gt; outputBuffer;
+    
+public:
+    void processAudio(float* input, float* output, int numSamples) {
+        // Update grain states
+        updateGrains();
+        
+        // Process each grain
+        for (auto& grain : activeGrains) {
+            if (grain.isActive()) {
+                grain.process(output, numSamples);
+            }
+        }
+        
+        // Apply effects and output
+        applyEffects(output, numSamples);
+    }
+};</pre>
+                </div>
+                
+                <div class="project-links">
+                    <a href="UMass Amherst Application/Surround-3/Current_ThinkingLFESolutions.cpp">View Source Code</a>
+                    <a href="UMass Amherst Application/Surround-3/8.13In-ProgressLiveDualUnit.cpp">Latest Development</a>
+                </div>
+            </div>
+
+            <!-- Pro Tools Session Analyzer -->
+            <div class="project-detail">
+                <h2>Pro Tools Session Analyzer</h2>
+                <div class="project-meta">
+                    <span class="meta-item">Language: C++</span>
+                    <span class="meta-item">Type: Audio Analysis Tool</span>
+                    <span class="meta-item">Complexity: Intermediate</span>
+                </div>
+                
+                <p style="font-size: 1.1rem; line-height: 1.8; color: #555; margin-bottom: 2rem;">
+                    A C++ tool that parses Pro Tools .ptx session files and generates comprehensive analysis reports. Built for EP-381 Audio Engineering coursework to validate project requirements and analyze session structures.
+                </p>
+                
+                <h3>Key Features</h3>
+                <ul class="feature-list">
+                    <li>Binary file parsing of Pro Tools session format</li>
+                    <li>Track layout analysis and classification</li>
+                    <li>Audio file detection and cataloging</li>
+                    <li>Sample rate and configuration detection</li>
+                    <li>Automated recommendations and warnings</li>
+                </ul>
+                
+                <h3>Usage Example</h3>
+                <div class="code-block">
+<pre>// Compile and run
+g++ -std=c++17 -o protools_analyzer protools_analyzer.cpp
+./protools_analyzer "EP381 P2 MyProject.ptx"
+
+// Output includes:
+// - Track count and types
+// - Audio file references
+// - Session configuration
+// - Potential issues or warnings</pre>
+                </div>
+                
+                <div class="project-links">
+                    <a href="UMass Amherst Application/Audio-Software-Analysis/Audio-Software-Analysis/protools_analyzer.cpp">View Source Code</a>
+                    <a href="UMass Amherst Application/Audio-Software-Analysis/Audio-Software-Analysis/README.md">Documentation</a>
+                </div>
+            </div>
+
+            <!-- Video-to-Audio Design Analyzer -->
+            <div class="project-detail">
+                <h2>Video-to-Audio Design Analyzer</h2>
+                <div class="project-meta">
+                    <span class="meta-item">Language: C++</span>
+                    <span class="meta-item">Type: Computer Vision Tool</span>
+                    <span class="meta-item">Complexity: Advanced</span>
+                </div>
+                
+                <p style="font-size: 1.1rem; line-height: 1.8; color: #555; margin-bottom: 2rem;">
+                    An innovative tool that uses computer vision to analyze video content and automatically generate audio design recommendations. This project bridges visual analysis with audio engineering workflows.
+                </p>
+                
+                <h3>Key Features</h3>
+                <ul class="feature-list">
+                    <li>Computer vision analysis (motion detection, scene changes)</li>
+                    <li>HOG people detection for human presence</li>
+                    <li>Visual-to-audio characteristic mapping</li>
+                    <li>Audio engineering recommendations</li>
+                    <li>Frame-by-frame analysis reports</li>
+                </ul>
+                
+                <h3>Technical Requirements</h3>
+                <div class="code-block">
+<pre>// Dependencies and compilation
+brew install opencv  // macOS
+sudo apt install libopencv-dev  // Ubuntu
+
+// Compile with OpenCV
+g++ -std=c++17 $(pkg-config --cflags opencv4) \
+    -o video_analyzer video_audio_analyzer.cpp \
+    $(pkg-config --libs opencv4)</pre>
+                </div>
+                
+                <div class="project-links">
+                    <a href="UMass Amherst Application/Audio-Software-Analysis/Audio-Software-Analysis/video_audio_analyzer.cpp">View Source Code</a>
+                    <a href="UMass Amherst Application/Audio-Software-Analysis/Audio-Software-Analysis/README.md">Setup Guide</a>
+                </div>
+            </div>
+
+            <!-- Audio-Video Analysis Tools -->
+            <div class="project-detail">
+                <h2>Audio-Video Analysis Tools</h2>
+                <div class="project-meta">
+                    <span class="meta-item">Language: C++</span>
+                    <span class="meta-item">Type: Media Processing Tools</span>
+                    <span class="meta-item">Complexity: Intermediate</span>
+                </div>
+                
+                <p style="font-size: 1.1rem; line-height: 1.8; color: #555; margin-bottom: 2rem;">
+                    A collection of C++ tools designed for media creation and educational workflows. These tools include hex editing capabilities, stereo stem processing, and WAV file cleaning utilities.
+                </p>
+                
+                <h3>Tool Collection</h3>
+                <ul class="feature-list">
+                    <li><strong>HexEditor.cpp</strong>: Binary file analysis and editing</li>
+                    <li><strong>InterleaveStereoStem.cpp</strong>: Stereo audio processing and manipulation</li>
+                    <li><strong>WavCleaner.cpp</strong>: Audio file cleaning and optimization</li>
+                </ul>
+                
+                <h3>Educational Applications</h3>
+                <p>These tools were developed to support audio engineering education and provide practical examples of low-level audio processing concepts. They demonstrate fundamental programming principles while solving real-world audio engineering problems.</p>
+                
+                <div class="project-links">
+                    <a href="UMass Amherst Application/Tiny-Data-Tools/HexEditor.cpp">Hex Editor</a>
+                    <a href="UMass Amherst Application/Tiny-Data-Tools/InterleaveStereoStem.cpp">Stereo Processing</a>
+                    <a href="UMass Amherst Application/Tiny-Data-Tools/WavCleaner.cpp">WAV Cleaner</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 Camille Toubol Fernandez. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="index.html#about">About</a>
+                    <a href="index.html#projects">Projects</a>
+                    <a href="index.html#music">Music</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
