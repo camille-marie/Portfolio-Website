@@ -177,8 +177,6 @@ function showNotification(message, type = 'info') {
     }, 5000);
 }
 
-
-
 // Add loading states to buttons
 document.querySelectorAll('.btn').forEach(button => {
     button.addEventListener('click', function(e) {
@@ -317,6 +315,8 @@ function preloadImages() {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded - starting initialization');
+    
     preloadImages();
     
     // Add fade-in effect to all cards
@@ -332,10 +332,252 @@ document.addEventListener('DOMContentLoaded', () => {
         }, index * 100);
     });
     
-    // Audio fade-out functionality for First Composition Techniques
+    // Audio functionality for Portfolio Composition
+    console.log('Looking for audio elements...');
     const audioPlayer = document.querySelector('.audio-player');
-    if (audioPlayer) {
+    const audioStatus = document.getElementById('audio-status');
+    
+    console.log('Audio player found:', audioPlayer);
+    console.log('Audio status element found:', audioStatus);
+    
+    if (audioPlayer && audioStatus) {
+        console.log('Both elements found, setting up audio...');
         let fadeInterval;
+        
+        // Check if running locally or from server
+        const isLocalFile = window.location.protocol === 'file:';
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        
+        // Update protocol info display
+        const protocolInfo = document.getElementById('protocol-info');
+        if (protocolInfo) {
+            protocolInfo.textContent = `${window.location.protocol}//${window.location.hostname}:${window.location.port || 'default'}`;
+        }
+        
+        if (isLocalFile) {
+            audioStatus.textContent = '❌ Audio disabled - Running from local file. Use local server to enable audio.';
+            audioStatus.style.color = '#f44336';
+            console.log('Running from local file - audio disabled');
+        } else if (isLocalhost) {
+            audioStatus.textContent = '🔍 Testing audio file...';
+            audioStatus.style.color = '#ff9800';
+            console.log('Running from localhost - testing audio');
+        } else {
+            audioStatus.textContent = '🔍 Testing audio file...';
+            audioStatus.style.color = '#ff9800';
+            console.log('Running from server - testing audio');
+        }
+        
+        // Add loading indicator to audio player
+        audioPlayer.addEventListener('loadstart', () => {
+            if (!isLocalFile) {
+                audioStatus.textContent = '⏳ Loading Portfolio.wav...';
+                audioStatus.style.color = '#ff9800';
+            }
+        });
+        
+        audioPlayer.addEventListener('progress', () => {
+            if (!isLocalFile && audioStatus.textContent.includes('Loading')) {
+                audioStatus.textContent = '⏳ Loading Portfolio.wav... (buffering)';
+            }
+        });
+        
+        // Add visual indicator for disabled audio player
+        if (isLocalFile) {
+            audioPlayer.style.opacity = '0.5';
+            audioPlayer.style.pointerEvents = 'none';
+            audioPlayer.title = 'Audio disabled - Use local server to enable';
+        } else {
+            // Force reload audio element when running from server
+            console.log('Forcing audio reload for server environment');
+            audioPlayer.load();
+            
+            // Ensure audio player is fully enabled
+            audioPlayer.style.opacity = '1';
+            audioPlayer.style.pointerEvents = 'auto';
+            audioPlayer.removeAttribute('disabled');
+            audioPlayer.controls = true;
+            
+            // Update server status
+            const serverStatus = document.getElementById('server-status');
+            if (serverStatus) {
+                serverStatus.textContent = '✅ Connected to localhost:8000';
+                serverStatus.style.color = '#2e7d32';
+            }
+            
+                    // Add a small delay and then check if audio is working
+        setTimeout(() => {
+            console.log('Audio readyState:', audioPlayer.readyState);
+            console.log('Audio networkState:', audioPlayer.networkState);
+            console.log('Audio error:', audioPlayer.error);
+            console.log('Audio src:', audioPlayer.src);
+            console.log('Audio currentSrc:', audioPlayer.currentSrc);
+            
+            if (audioPlayer.readyState >= 1) {
+                audioStatus.textContent = '✅ Audio player enabled and ready!';
+                audioStatus.style.color = '#4caf50';
+            } else {
+                audioStatus.textContent = '⚠️ Audio player loaded but may need manual activation';
+                audioStatus.style.color = '#ff9800';
+                
+                // Try to load the audio again
+                audioPlayer.load();
+            }
+        }, 1000);
+        }
+        
+        // Test file accessibility (only if not running locally)
+        if (!isLocalFile) {
+            console.log('Testing file accessibility...');
+            fetch('Portfolio.wav', { method: 'HEAD' })
+                .then(response => {
+                    console.log('File fetch response:', response);
+                    if (response.ok) {
+                        audioStatus.textContent = '✅ File accessible - Audio should work!';
+                        audioStatus.style.color = '#4caf50';
+                        
+                        // Force audio to load and enable
+                        audioPlayer.load();
+                        audioPlayer.style.opacity = '1';
+                        audioPlayer.style.pointerEvents = 'auto';
+                        audioPlayer.removeAttribute('disabled');
+                        
+                        // Add event listeners after successful load
+                        setupAudioEventListeners();
+                        
+                        // Update server status
+                        const serverStatus = document.getElementById('server-status');
+                        if (serverStatus) {
+                            serverStatus.textContent = '✅ Audio enabled and ready!';
+                            serverStatus.style.color = '#2e7d32';
+                        }
+                    } else {
+                        audioStatus.textContent = '❌ File not accessible - Check file path';
+                        audioStatus.style.color = '#f44336';
+                    }
+                })
+                .catch(error => {
+                    console.log('File fetch error:', error);
+                    audioStatus.textContent = `❌ File error: ${error.message}`;
+                    audioStatus.style.color = '#f44336';
+                });
+        }
+        
+        // Function to setup audio event listeners
+        function setupAudioEventListeners() {
+            // Try to play a tiny bit to test if it works
+            audioPlayer.addEventListener('canplay', () => {
+                console.log('Audio can play');
+                if (audioStatus) {
+                    audioStatus.textContent = '✅ Audio loaded successfully!';
+                    audioStatus.style.color = '#4caf50';
+                }
+            });
+            
+            audioPlayer.addEventListener('error', (e) => {
+                console.error('Audio error:', e);
+                if (audioStatus) {
+                    audioStatus.textContent = `❌ Audio error: ${audioPlayer.error ? audioPlayer.error.message : 'Unknown error'}`;
+                    audioStatus.style.color = '#f44336';
+                }
+            });
+            
+            // Also try to load the audio directly as a fallback
+            audioPlayer.load();
+        }
+        
+        // Fallback: try to load audio even if fetch fails (only if not running locally)
+        if (!isLocalFile) {
+            setTimeout(() => {
+                if (audioStatus.textContent.includes('Testing') || audioStatus.textContent.includes('Loading')) {
+                    console.log('Fallback: attempting to load audio directly');
+                    audioPlayer.load();
+                    setupAudioEventListeners();
+                }
+            }, 2000);
+        }
+        
+        // Add test button functionality
+        const testButton = document.getElementById('test-audio');
+        if (testButton) {
+            // Disable test button if running locally
+            if (isLocalFile) {
+                testButton.disabled = true;
+                testButton.style.opacity = '0.5';
+                testButton.style.cursor = 'not-allowed';
+                testButton.textContent = 'Test Audio (Disabled - Use Server)';
+            } else {
+                // Enable test button and add manual enable function
+                testButton.textContent = 'Test Audio & Enable Player';
+                testButton.style.background = '#4caf50';
+                
+                // Add a second button for manual enable
+                const enableButton = document.createElement('button');
+                enableButton.textContent = '🔧 Force Enable Audio';
+                enableButton.style.cssText = 'margin-left: 10px; padding: 8px 16px; background: #ff9800; color: white; border: none; border-radius: 4px; cursor: pointer;';
+                enableButton.addEventListener('click', () => {
+                    console.log('Force enabling audio player...');
+                    audioPlayer.style.opacity = '1';
+                    audioPlayer.style.pointerEvents = 'auto';
+                    audioPlayer.removeAttribute('disabled');
+                    audioPlayer.controls = true;
+                    audioPlayer.load();
+                    audioStatus.textContent = '🔧 Audio player manually enabled - try playing now!';
+                    audioStatus.style.color = '#ff9800';
+                });
+                testButton.parentNode.insertBefore(enableButton, testButton.nextSibling);
+            }
+            
+            testButton.addEventListener('click', () => {
+                if (isLocalFile) {
+                    audioStatus.textContent = '❌ Audio test disabled - Please use local server to test audio.';
+                    audioStatus.style.color = '#f44336';
+                    return;
+                }
+                
+                console.log('Test button clicked');
+                audioStatus.textContent = '🔍 Testing audio playback...';
+                audioStatus.style.color = '#ff9800';
+                
+                // First, try to manually enable the audio player
+                audioPlayer.style.opacity = '1';
+                audioPlayer.style.pointerEvents = 'auto';
+                audioPlayer.removeAttribute('disabled');
+                audioPlayer.controls = true;
+                
+                // Force reload the audio element
+                audioPlayer.load();
+                
+                // Try to play a small portion of the audio
+                audioPlayer.currentTime = 0;
+                audioPlayer.volume = 0.1; // Low volume for testing
+                
+                const playPromise = audioPlayer.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        // Audio started playing successfully
+                        setTimeout(() => {
+                            audioPlayer.pause();
+                            audioPlayer.currentTime = 0;
+                            audioPlayer.volume = 1;
+                            audioStatus.textContent = '✅ Audio test successful! Portfolio.wav is working.';
+                            audioStatus.style.color = '#4caf50';
+                        }, 1000); // Play for 1 second then stop
+                    }).catch(error => {
+                        console.error('Audio test failed:', error);
+                        audioStatus.textContent = `❌ Audio test failed: ${error.message}`;
+                        audioStatus.style.color = '#f44336';
+                        
+                        // Provide helpful troubleshooting info
+                        if (error.name === 'NotAllowedError') {
+                            audioStatus.textContent += ' - Try clicking the play button on the audio player instead';
+                        } else if (error.name === 'NotSupportedError') {
+                            audioStatus.textContent += ' - WAV format might not be supported in this browser';
+                        }
+                    });
+                }
+            });
+        }
         
         audioPlayer.addEventListener('play', () => {
             // Clear any existing fade interval
